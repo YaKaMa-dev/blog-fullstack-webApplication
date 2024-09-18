@@ -9,28 +9,44 @@ use App\Models\User;
 use Illuminate\Validation\ValidationException;
 
 
+
 class AuthController extends Controller
 {
     // Register method
     public function register(Request $request)
     {
-        $request->validate([
-            'name' => 'required|unique:users|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:8',
-        ]);
+        try {
+            // Validate the input data
+            $validatedData = $request->validate([
+                'name' => 'required|unique:users|string|max:255',
+                'email' => 'required|string|email|max:255|unique:users',
+                'password' => 'required|string|min:8',
+            ]);
 
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
-
-        return response()->json([
-            'message' => 'User registered successfully!',
-            'user' => $user,
-        ]);
+            //create user
+            $user = User::create([
+                'name' => $validatedData['name'],
+                'email' => $validatedData['email'],
+                'password' => Hash::make($validatedData['password']),
+            ]);
+            
+            return response()->json([
+                'message' => 'User registered successfully!',
+                'user' => $user,
+            ], 200);
+        } catch (ValidationException $e) {
+            return response()->json([
+                'message' => 'Validation error',
+                'errors' => $e->errors(),
+            ], 422);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Server Error 500!',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
     }
+
 
     // Login method
     public function login(Request $request)
@@ -45,7 +61,7 @@ class AuthController extends Controller
         if (!Auth::attempt($credentials)) {
             return response()->json([
                 'message' => 'Invalid credentials',
-            ]);
+            ], 401);
         }
 
         // Return a success message
@@ -58,7 +74,8 @@ class AuthController extends Controller
     // Logout method
     public function logout(Request $request)
     {
-        $request->user()->currentAccessToken()->delete();
+
+        Auth::logout();
 
         return response()->json([
             'message' => 'Logged out successfully!',
