@@ -11,44 +11,42 @@ const SearchBar = () => {
   return (
     <Box
       sx={{
-        transition: "width 0.5s ease",
-        width: focused ? "300px" : "50px",
+        display: "flex",
+        gap: 2,
       }}
     >
+      <IconButton
+        onClick={handleSearchButton}
+        aria-label="search"
+        sx={{
+          bgcolor: "support.main",
+          color: "secondary.main",
+          "&:hover": {
+            transform: "scale(1.1)",
+            bgcolor: "support.main",
+          },
+        }}
+      >
+        <SearchIcon />
+      </IconButton>
       <Box
         sx={{
           display: "flex",
+          justifyContent: "flex-end",
           alignItems: "center",
-          gap: 3,
+          paddingLeft: focused ? "15px" : "0",
           bgcolor: "secondary.main",
           borderRadius: "30px",
-          transition: "max-width 0.5s ease",
-          maxWidth: focused ? "300px" : "0px",
+          transition: "max-width 0.5s ease, paddingLeft 0.5s ease",
+          maxWidth: focused ? "150px" : "0px",
           transformOrigin: "left",
         }}
       >
-        <IconButton
-          onClick={handleSearchButton}
-          aria-label="search"
-          sx={{
-            bgcolor: "support.main",
-            color: "secondary.main",
-            "&:hover": {
-              transform: "scale(1.1)",
-              bgcolor: "support.main",
-            },
-          }}
-        >
-          <SearchIcon />
-        </IconButton>
-
         <InputBase
           placeholder="Search..."
           sx={{
             borderRadius: "30px",
             bgcolor: "secondary.main",
-            margin: "0",
-            padding: "5px",
             transition: "opacity 0.5s ease, visibility 0.5s ease",
             opacity: focused ? 1 : 0,
             visibility: focused ? "visible" : "hidden",

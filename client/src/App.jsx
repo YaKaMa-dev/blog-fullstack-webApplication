@@ -1,15 +1,15 @@
-import Header from "./components/Header";
-import { BrowserRouter } from "react-router-dom";
+import Header from "./components/layouts_components/Header";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./App.css";
+import Home from "./pages/Home";
+
 function App() {
   return (
     <BrowserRouter>
       <Header isAuthenticated={true}></Header>
-      <div>hello world</div>
-      <div>hello world</div>
-      <div>hello world</div>
-      <div>hello world</div>
-      <div>hello world</div>
+      <Routes>
+        <Route path="/" exact element={<Home />} />
+      </Routes>
     </BrowserRouter>
   );
 }

@@ -25,7 +25,13 @@ const NotificationBell = () => {
       <IconButton
         onClick={handleClick}
         aria-label="notifications"
-        sx={{ position: "relative" }}
+        sx={{
+          position: "relative",
+          color: "support.main",
+          "&:hover": {
+            transform: "scale(1.1)",
+          },
+        }}
       >
         <Badge badgeContent={notifications.length} color="error">
           <NotificationsIcon />
