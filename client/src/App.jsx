@@ -3,6 +3,7 @@ import "./App.css";
 import Home from "./pages/Home";
 import MainLayout from "./layouts/MainLayout";
 import AuthLayout from "./layouts/AuthLayout";
+import AuthPage from "./pages/auth/AuthPage";
 
 function App() {
   return (
@@ -13,7 +14,7 @@ function App() {
           <Route path="/Blog" />
         </Route>
         <Route element={<AuthLayout />}>
-          <Route path="/Auth" />
+          <Route path="/Auth" element={<AuthPage />} />
         </Route>
       </Routes>
     </BrowserRouter>

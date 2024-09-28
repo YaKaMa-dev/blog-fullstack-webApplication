@@ -1,23 +1,22 @@
 import { Outlet } from "react-router-dom";
-import { Container, Box, Typography, Button } from "@mui/material";
+import { Container, Box } from "@mui/material";
 
 const AuthLayout = () => {
   return (
     <Container
-      maxWidth="sm"
+      maxWidth="xl"
       sx={{
         display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
-        minHeight: "100vh", // Full viewport height
+        margin: "50px auto",
+        height: "80svh", // Full viewport height
       }}
     >
       <Box
         sx={{
-          padding: 3,
-          textAlign: "center",
+          bgcolor: "red",
           borderRadius: 2,
+          height: "100%",
+          width: "100%",
         }}
       >
         <Outlet />
