@@ -7,14 +7,16 @@ const AuthLayout = () => {
       maxWidth="xl"
       sx={{
         display: "flex",
-        margin: "50px auto",
-        height: "80svh", // Full viewport height
+        margin: "5px auto",
+        height: "98vh", // Full viewport height
       }}
     >
       <Box
         sx={{
           bgcolor: "red",
-          borderRadius: 2,
+          borderRadius: 5,
+          overflow: "hidden",
+          boxShadow: 3,
           height: "100%",
           width: "100%",
         }}

@@ -1,32 +1,121 @@
-import { Typography, Stack, Box } from "@mui/material";
+import {
+  Typography,
+  Stack,
+  Box,
+  TextField,
+  Button,
+  IconButton,
+  Fade,
+} from "@mui/material";
+import { CircleRounded } from "@mui/icons-material";
+import { useEffect, useState } from "react";
 
 const Login = () => {
+  const [sliderData, setSliderData] = useState([
+    {
+      title: "Information 1",
+      description: "Description about the information 1.",
+      selected: true,
+    },
+    {
+      title: "Information 2",
+      description: "Description about the information 2.",
+      selected: false,
+    },
+    {
+      title: "Information 3",
+      description: "Description about the information 3.",
+      selected: false,
+    },
+  ]);
+
+  const handleClickSlider = (index) => {
+    const updatedSliderData = [...sliderData];
+    updatedSliderData[index].selected = true;
+    updatedSliderData.forEach((item, i) => {
+      if (i !== index) item.selected = false;
+    });
+    setSliderData(updatedSliderData);
+  };
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const currentIndex = sliderData.findIndex((item) => item.selected);
+      const nextIndex = (currentIndex + 1) % sliderData.length;
+      handleClickSlider(nextIndex);
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, [sliderData]);
+
   return (
     <Stack
       direction="row"
       justifyContent={"center"}
       sx={{ minWidth: "100%", minHeight: "100%" }}
     >
-      <Box sx={{ width: "50%", minHeight: "100%", bgcolor: "white" }}>hhhh</Box>
+      <Box
+        sx={{ width: "50%", minHeight: "100%", bgcolor: "white", padding: 10 }}
+      >
+        <Typography variant="h2">Login</Typography>
+        <TextField label="Username" variant="filled" />
+        <TextField label="Password" variant="filled" type="password" />
+        <Button variant="contained" color="primary">
+          Login
+        </Button>
+      </Box>
 
       <Box
         sx={{
           backgroundImage:
-            "url(https://github.com/YaKaMa-dev/blog-fullstack-webApplication/blob/main/client/src/assets/images/auth_image.png)", // Set your image path
-          backgroundSize: "cover", // Cover the entire box
-          backgroundPosition: "center", // Center the image
+            "url(http://localhost:5173/src/assets/images/auth_image.png)",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
           minHeight: "100%",
-          width: "50%", // Set a height
+          padding: 4,
+          width: "50%",
           display: "flex",
-          alignItems: "center",
+          flexDirection: "column",
           justifyContent: "center",
+          alignItems: "center",
+          gap: 10,
+          color: "white",
         }}
       >
-        <Typography variant="h6" align="center">
-          Welcome to My Section
-        </Typography>
+        {sliderData.map((item) => (
+          <Fade key={item.title} in={item.selected} timeout={1000}>
+            <Box
+              textAlign={"center"}
+              style={{ display: item.selected ? "block" : "none" }}
+            >
+              <Typography variant="h5" sx={{ fontWeight: "bold" }}>
+                {item.title}
+              </Typography>
+              <Typography
+                variant="h6"
+                sx={{ fontWeight: "semi-bold" }}
+                gutterBottom
+              >
+                {item.description}
+              </Typography>
+            </Box>
+          </Fade>
+        ))}
+
+        <Box sx={{ display: "flex", flexDirection: "row", gap: 2 }}>
+          {sliderData.map((item, index) => (
+            <IconButton
+              key={item.title}
+              sx={{ color: sliderData[index].selected ? "white" : "auto" }}
+              onClick={() => handleClickSlider(index)}
+            >
+              <CircleRounded />
+            </IconButton>
+          ))}
+        </Box>
       </Box>
     </Stack>
   );
 };
+
 export default Login;
