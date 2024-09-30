@@ -2,15 +2,21 @@ import {
   Typography,
   Stack,
   Box,
+  InputAdornment,
+  OutlinedInput,
   TextField,
   Button,
   IconButton,
+  FormControl,
+  FormLabel,
   Fade,
 } from "@mui/material";
-import { CircleRounded } from "@mui/icons-material";
+import { Link } from "react-router-dom";
+import { CircleRounded, VisibilityOff, Visibility } from "@mui/icons-material";
 import { useEffect, useState } from "react";
 
 const Login = () => {
+  const [showPassword, setShowPassword] = useState(false);
   const [sliderData, setSliderData] = useState([
     {
       title: "Information 1",
@@ -28,6 +34,8 @@ const Login = () => {
       selected: false,
     },
   ]);
+
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
 
   const handleClickSlider = (index) => {
     const updatedSliderData = [...sliderData];
@@ -55,13 +63,94 @@ const Login = () => {
       sx={{ minWidth: "100%", minHeight: "100%" }}
     >
       <Box
-        sx={{ width: "50%", minHeight: "100%", bgcolor: "white", padding: 10 }}
+        sx={{
+          display: "flex",
+          justifyContent: "flex-start",
+          alignItems: "flex-start",
+          flexDirection: "column",
+          gap: 2,
+          width: "50%",
+          minHeight: "100%",
+          bgcolor: "white",
+          padding: 10,
+        }}
       >
-        <Typography variant="h2">Login</Typography>
-        <TextField label="Username" variant="filled" />
-        <TextField label="Password" variant="filled" type="password" />
-        <Button variant="contained" color="primary">
-          Login
+        <Typography
+          variant="h4"
+          color="support.main"
+          sx={{ fontWeight: "bold", marginBottom: 2 }}
+        >
+          LOGO
+        </Typography>
+        <Typography variant="h4" sx={{ fontWeight: "bold" }}>
+          Log in
+        </Typography>
+        <form action="">
+          <FormControl fullWidth margin="dense">
+            <FormLabel>Email</FormLabel>
+            <TextField
+              fullWidth
+              size="small"
+              placeholder="exp@example.com"
+              type="email"
+              required
+            ></TextField>
+          </FormControl>
+          <FormControl fullWidth margin="normal">
+            <FormLabel
+              sx={{ color: "gray", "&.Mui-focused": { color: "gray" } }}
+            >
+              Password
+            </FormLabel>
+            <OutlinedInput
+              id="outlined-adornment-password"
+              type={showPassword ? "text" : "password"}
+              endAdornment={
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={handleClickShowPassword}
+                    edge="end"
+                  >
+                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </InputAdornment>
+              }
+              fullWidth
+              placeholder="***********"
+              size="small"
+              required
+            />
+            <Typography
+              variant="body1"
+              component={Link}
+              to="/ForgotPassword"
+              sx={{
+                marginTop: 2,
+                color: "support.main",
+                textDecoration: "none",
+              }}
+            >
+              Forgot Password?
+            </Typography>
+          </FormControl>
+          <Button
+            variant="contained"
+            size="large"
+            fullWidth
+            sx={{ bgcolor: "support.main", color: "white" }}
+          >
+            Login
+          </Button>
+        </form>
+        <Button
+          variant="outlined"
+          size="large"
+          fullWidth
+          color="support.main"
+          // sx={{ bgcolor: "support.main", color: "white" }}
+        >
+          Sign Up
         </Button>
       </Box>
 
