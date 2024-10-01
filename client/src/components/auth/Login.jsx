@@ -9,52 +9,32 @@ import {
   IconButton,
   FormControl,
   FormLabel,
-  Fade,
 } from "@mui/material";
+import ShowSwitchInfo from "../ui/ShowSwitchInfo";
 import { Link } from "react-router-dom";
-import { CircleRounded, VisibilityOff, Visibility } from "@mui/icons-material";
-import { useEffect, useState } from "react";
+import { VisibilityOff, Visibility } from "@mui/icons-material";
+import { useState } from "react";
+import { useAuth } from "../../contexts/AuthContext";
 
 const Login = () => {
+  //functionalities :
   const [showPassword, setShowPassword] = useState(false);
-  const [sliderData, setSliderData] = useState([
-    {
-      title: "Information 1",
-      description: "Description about the information 1.",
-      selected: true,
-    },
-    {
-      title: "Information 2",
-      description: "Description about the information 2.",
-      selected: false,
-    },
-    {
-      title: "Information 3",
-      description: "Description about the information 3.",
-      selected: false,
-    },
-  ]);
 
-  const handleClickShowPassword = () => setShowPassword((show) => !show);
+  //data:
+  const [inputs, setInputs] = useState({
+    email: "",
+    password: "",
+  });
 
-  const handleClickSlider = (index) => {
-    const updatedSliderData = [...sliderData];
-    updatedSliderData[index].selected = true;
-    updatedSliderData.forEach((item, i) => {
-      if (i !== index) item.selected = false;
-    });
-    setSliderData(updatedSliderData);
+  const onChangeInputs = (e) => {
+    setInputs({ ...inputs, [e.target.name]: e.target.value });
   };
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      const currentIndex = sliderData.findIndex((item) => item.selected);
-      const nextIndex = (currentIndex + 1) % sliderData.length;
-      handleClickSlider(nextIndex);
-    }, 5000);
-
-    return () => clearInterval(interval);
-  }, [sliderData]);
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
+  const auth = useAuth();
+  const handleLogin = (e, email, password) => {
+    e.preventDefault();
+    auth.login(e, email, password);
+  };
 
   return (
     <Stack
@@ -85,7 +65,7 @@ const Login = () => {
         <Typography variant="h4" sx={{ fontWeight: "bold" }}>
           Log in
         </Typography>
-        <form action="">
+        <form>
           <FormControl fullWidth margin="dense">
             <FormLabel>Email</FormLabel>
             <TextField
@@ -93,7 +73,10 @@ const Login = () => {
               size="small"
               placeholder="exp@example.com"
               type="email"
+              name="email"
               required
+              value={inputs.email}
+              onChange={(e) => onChangeInputs(e)}
             ></TextField>
           </FormControl>
           <FormControl fullWidth margin="normal">
@@ -105,6 +88,7 @@ const Login = () => {
             <OutlinedInput
               id="outlined-adornment-password"
               type={showPassword ? "text" : "password"}
+              name="password"
               endAdornment={
                 <InputAdornment position="end">
                   <IconButton
@@ -117,9 +101,11 @@ const Login = () => {
                 </InputAdornment>
               }
               fullWidth
-              placeholder="***********"
+              placeholder="Password"
               size="small"
               required
+              value={inputs.password}
+              onChange={(e) => onChangeInputs(e)}
             />
             <Typography
               variant="body1"
@@ -138,71 +124,23 @@ const Login = () => {
             variant="contained"
             size="large"
             fullWidth
-            sx={{ bgcolor: "support.main", color: "white" }}
+            sx={{ bgcolor: "support.main", color: "white", marginBottom: 2 }}
+            onClick={(e) => handleLogin(e, inputs.email, inputs.password)}
           >
             Login
           </Button>
+          <Button
+            variant="outlined"
+            size="large"
+            fullWidth
+            color="support.main"
+          >
+            Sign Up
+          </Button>
         </form>
-        <Button
-          variant="outlined"
-          size="large"
-          fullWidth
-          color="support.main"
-          // sx={{ bgcolor: "support.main", color: "white" }}
-        >
-          Sign Up
-        </Button>
       </Box>
-
-      <Box
-        sx={{
-          backgroundImage:
-            "url(http://localhost:5173/src/assets/images/auth_image.png)",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          minHeight: "100%",
-          padding: 4,
-          width: "50%",
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-          gap: 10,
-          color: "white",
-        }}
-      >
-        {sliderData.map((item) => (
-          <Fade key={item.title} in={item.selected} timeout={1000}>
-            <Box
-              textAlign={"center"}
-              style={{ display: item.selected ? "block" : "none" }}
-            >
-              <Typography variant="h5" sx={{ fontWeight: "bold" }}>
-                {item.title}
-              </Typography>
-              <Typography
-                variant="h6"
-                sx={{ fontWeight: "semi-bold" }}
-                gutterBottom
-              >
-                {item.description}
-              </Typography>
-            </Box>
-          </Fade>
-        ))}
-
-        <Box sx={{ display: "flex", flexDirection: "row", gap: 2 }}>
-          {sliderData.map((item, index) => (
-            <IconButton
-              key={item.title}
-              sx={{ color: sliderData[index].selected ? "white" : "auto" }}
-              onClick={() => handleClickSlider(index)}
-            >
-              <CircleRounded />
-            </IconButton>
-          ))}
-        </Box>
-      </Box>
+      {/* Showing Informations Switched by rounded circles  */}
+      <ShowSwitchInfo />
     </Stack>
   );
 };
